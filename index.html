@@ -3,43 +3,41 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Todo CRUD app</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <title>Todoist</title>
   </head>
-  <body class="bg-slate-500">
-    <section class="bg-white m-20 max-w-lg mx-auto p-3">
-      <header class="px-5 py-4 max-w-lg mx-auto">
-        <h1
-          class="font-bold text-3xl p-3 text-center w-full bg-[#040734] text-white text-center font-medium font-medium"
-        >
-          DailyTask Update
-        </h1>
-      </header>
+  <body class="bg-slate-300">
+    <div class="flex justify-center item-center mt-60">
+      <div
+        id="todo"
+        class="header bg-blue-300 w-[60%] text-white text-center rounded-lg shadow-lg"
+      >
+          <d class="pb-10">
+            <h2 class="text-2xl">To Do List</h2>
+            <input
+              type="text"
+              id="todo-task"
+              placeholder="What are we doing today"
+              class="w-[30%] px-4 py-2 text-black"
+            />
+            <span
+              class="addBtn bg-slate-400 text-white w-[80%] p-2 text-center text-18 cursor-pointer transition duration-300 rounded-lg hover:bg-Blue-900"
+              >Add
+            </span>
+          </d>
+          
+            <span class="editBtn hidden bg-blue-500 text-white w-1/4 py-2 px-4 text-18 cursor-pointer transition duration-300 rounded-lg">
+  Update
+</span>
+<span class="complete-status-icon absolute right-14 top-0 py-2 px-4 text-18 cursor-pointer transition duration-300 hover:bg-green-400">
+  ✓
+</span>
 
-      <main class="px-5 mt-10 max-w-lg mx-auto">
-        <form class="flex gap-2">
-          <input
-            type="text"
-            placeholder="What are you doing today?"
-            class="p-2 rounded-lg border border-slate-100 w-full outline-none bg-transparent"
-            id="todo-input"
-          />
-
-          <button
-            class="bg-blue-500 rounded-lg px-2.5 py-2 text-sm text-white w-[100px]"
-            onclick="createTodo()"
-            type="button"
-          >
-            Add todo
-          </button>
-        </form>
-      </main>
-
-      <section class="mt-5" id="todo-list">
-        <!-- JavaScript will append todos here -->
-      </section>
-    </section>
-
-    <script src="main.js"></script>
+            <ul id="todo-list-container" class="p-0 pl-40"></ul>
+        </div>
+        <!-- List items go here -->
+      </div>
+    </div>
   </body>
+  <script src="./index.js"></script>
 </html>

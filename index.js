@@ -1,107 +1,100 @@
-function uuid() {
-  return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, function (c) {
-    var r = (Math.random() * 16) | 0,
-      v = c == "x" ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
+const pageReload = () => {
+  window.location.reload();
+};
+const addBtn = document.querySelector(".addBtn");
+const editBtn = document.querySelector(".editBtn");
 
-const DB_NAME = "todo_db";
+//Get toDo from LS
+const todoDb = "database";
+//Read from local storage
+const toDoDbInstance = JSON.parse(localStorage.getItem(todoDb)) || [];
+// Create Function
+const addToDo = () => {
+  const toDoInput = document.getElementById("todo-task");
+  const todoTitle = toDoInput.value;
 
-function createTodo() {
-  const todoInput = document.querySelector("#todo-input");
-  const newTodo = {
-    id: uuid(),
-    title: todoInput.value,
-    created_at: Date.now(),
+  const newToDo = {
+    id: toDoDbInstance.length + 1,
+    title: todoTitle,
+    isCompleted: false,
   };
+  const updateToDoDb = [...toDoDbInstance, newToDo];
 
-  const todoList = document.getElementById("todo-list");
+  localStorage.setItem(todoDb, JSON.stringify(updateToDoDb));
 
-  const todo_db = JSON.parse(localStorage.getItem(DB_NAME)) || [];
-  const new_todo_db = [...todo_db, newTodo];
-  localStorage.setItem(DB_NAME, JSON.stringify(new_todo_db));
+  pageReload();
+};
 
-  const todoItem = createTodoElement(newTodo);
-  todoList.appendChild(todoItem);
+//Render Function
+const renderToDoItem = function () {
+  const todoListContainer = document.getElementById("todo-list-container");
+  const todoListItem = toDoDbInstance
+    .map(function (todo) {
+      const { id, title, isCompleted } = todo;
+      return `
+    <li class = ${isCompleted && "checked"}>
+        ${title}
+         <span  id = "checked" class = "complete-status-icon" onClick = "toggleComplete(${id})">✔</span>
+        <span class = "update" onClick = "updateToDoItem(${id})">✍️</span>
+        <span class="close" onClick ="deleteToDo(${id})">🗑</span>
+      </li>
+    `;
+    })
+    .join("");
 
-  todoInput.value = "";
-}
+  todoListContainer.innerHTML = todoListItem;
+};
+renderToDoItem();
+//Update Function
+const updateToDoItem = (_id) => {
+  const updateItems = toDoDbInstance.find((todo) => todo.id == _id);
 
-function createTodoElement(todo) {
-  const todoItem = document.createElement("div");
-  todoItem.classList.add(
-    "group",
-    "flex",
-    "justify-between",
-    "py-3",
-    "px-2.5",
-    "max-w-lg",
-    "mx-auto",
-    "rounded-lg",
-    "hover:bg-blue-500",
-    "hover:text-white"
+  const toDoInputUpdate = document.getElementById("todo-task");
+  toDoInputUpdate.value = updateItems.title;
+  addBtn.style.display = "none";
+  editBtn.style.display = "block";
+  editBtn.setAttribute("id", _id);
+};
+function updateToDoTitle() {
+  const { id } = this;
+  const _id = parseInt(id);
+
+  const todoToUpdate = toDoDbInstance.find((todo) => todo.id === _id);
+
+  todoToUpdate.title = document.getElementById("todo-task").value;
+  const updatedToDoDb = toDoDbInstance.map((todo) =>
+    todo._id === _id ? todoToUpdate : todo
   );
+  localStorage.setItem(todoDb, JSON.stringify(updatedToDoDb));
+  pageReload();
+}
 
-  const todoTitle = document.createElement("a");
-  todoTitle.href = ""; // You should add the appropriate link or action
-  todoTitle.textContent = todo.title;
+// Delete Function
+const deleteToDo = (toDoId) => {
+  const updatedToDoDb = toDoDbInstance.filter(({ id }) => id !== toDoId);
 
-  const todoActions = document.createElement("section");
-  todoActions.classList.add(
-    "flex",
-    "gap-3",
-    "invisible",
-    "group-hover:visible"
+  localStorage.setItem(todoDb, JSON.stringify(updatedToDoDb));
+  pageReload();
+};
+
+// TOGGLE FUNCTION
+const toggleComplete = (todoComplete) => {
+  const isCompleteToDo = toDoDbInstance.find(
+    (todo) => todo.id === todoComplete
   );
-
-  // The delete and edit functionality
-  const deleteButton = document.createElement("button");
-  deleteButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>`;
-  deleteButton.addEventListener("click", () => {
-    deleteTodoItem(todo.id);
-    todoItem.remove();
-  });
-
-  const editButton = document.createElement("button");
-  editButton.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6"><path stroke-linecap="round" stroke-linejoin="round" d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"/></svg>`;
-  editButton.addEventListener("click", () => {
-    editTodoItem(todo.id, todoTitle);
-  });
-
-  todoActions.appendChild(deleteButton);
-  todoActions.appendChild(editButton);
-
-  todoItem.appendChild(todoTitle);
-  todoItem.appendChild(todoActions);
-
-  return todoItem;
-}
-
-function deleteTodoItem(id) {
-  const todo_db = JSON.parse(localStorage.getItem(DB_NAME)) || [];
-  const updatedTodoList = todo_db.filter((todo) => todo.id !== id);
-  localStorage.setItem(DB_NAME, JSON.stringify(updatedTodoList));
-}
-
-function editTodoItem(id, todoTitle) {
-  const todo_db = JSON.parse(localStorage.getItem(DB_NAME)) || [];
-  const todoToEdit = todo_db.find((todo) => todo.id === id);
-  const updatedTitle = prompt("Edit Todo:", todoToEdit.title);
-  if (updatedTitle !== null) {
-    todoToEdit.title = updatedTitle;
-    todoTitle.textContent = updatedTitle;
-    localStorage.setItem(DB_NAME, JSON.stringify(todo_db));
+  if (isCompleteToDo.isCompleted === true) {
+    isCompleteToDo.isCompleted = false;
+  } else {
+    isCompleteToDo.isCompleted = true;
   }
-}
+  const toggleToDoDb = toDoDbInstance.map((todo) =>
+    todo.id === todoComplete ? isCompleteToDo : todo
+  );
+  localStorage.setItem(todoDb, JSON.stringify(toggleToDoDb));
 
-// The Read function
-document.addEventListener("DOMContentLoaded", () => {
-  const todoList = document.getElementById("todo-list");
-  const todo_db = JSON.parse(localStorage.getItem(DB_NAME)) || [];
+  pageReload();
+};
 
-  todo_db.forEach((todo) => {
-    const todoItem = createTodoElement(todo);
-    todoList.appendChild(todoItem);
-  });
-});
+//ADD EVENT LISTENER
+addBtn.addEventListener("click", addToDo);
+editBtn.addEventListener("click", updateToDoTitle);
