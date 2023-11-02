@@ -4,42 +4,40 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <script src="https://cdn.tailwindcss.com"></script>
-    <title>Todoist</title>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <title>To do List</title>
   </head>
-  <body class="bg-slate-300">
-    <div
-      class="flex flex-col bg-blue-300 w-[60%] justify-center items-center mt-60 rounded-lg shadow-lg"
-    >
-      <div id="todo" class="header w-[60%] text-white text-center">
-        <div class="pb-10">
-          <h2 class="text-2xl">To Do List</h2>
+  <body class="m-10">
+    <div class="w-[60%]">
+      <header class="bg-slate-100 p-10 max-w-auto">
+        <h1 class="text-3xl">To do</h1>
+        <p>Create a List Today</p>
+      </header>
+      <section class="bg-white text-center items-center justify-center">
+        <div class="flex gap-3 text-center items-center justify-center">
           <input
             type="text"
-            id="todo-task"
-            placeholder="What are we doing today"
-            class="w-[30%] px-4 py-2 text-black"
+            id="todo-input"
+            placeholder="Add a todo ..."
+            class="mt-5 border border-l p-6 w-[60%] rounded-md"
           />
-          <span
-            class="addBtn bg-slate-400 text-white w-[80%] p-2 text-center text-18 cursor-pointer transition duration-300 rounded-lg hover:bg-Blue-900"
-            >Add
-          </span>
-
-          <span
-            class="editBtn hidden bg-blue-500 text-white w-1/4 py-2 px-4 text-18 cursor-pointer transition duration-300 rounded-lg"
+          <button
+            type="button"
+            onclick="createTodo()"
+            class="bg-green-400 p-6 w-[150px] text-white mt-5 rounded-md hover:bg-green-800"
           >
-            Update
-          </span>
+            Add
+          </button>
         </div>
-
-        <!-- <div
-          class="complete-status-icon absolute right-14 top-0 py-2 px-4 text-18 cursor-pointer transition duration-300 hover:bg-green-400"
-        >
-          ✓
-        </div> -->
-      </div>
-      <div class="">
-        <ul id="todo-list-container" class="p-0 pl-40"></ul>
-      </div>
+      </section>
+      <span
+        id="Form-message"
+        class="hidden text-red-600 text-center text-xs"
+      ></span>
+      <section
+        class="bg-gray-300 p-6 m-10 text-center items-center justify-center rounded-md"
+        id="todo-list-container"
+      ></section>
     </div>
     <script src="./index.js"></script>
   </body>
