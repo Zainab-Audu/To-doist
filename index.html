@@ -7,37 +7,40 @@
     <title>Todoist</title>
   </head>
   <body class="bg-slate-300">
-    <div class="flex justify-center item-center mt-60">
-      <div
-        id="todo"
-        class="header bg-blue-300 w-[60%] text-white text-center rounded-lg shadow-lg"
-      >
-          <d class="pb-10">
-            <h2 class="text-2xl">To Do List</h2>
-            <input
-              type="text"
-              id="todo-task"
-              placeholder="What are we doing today"
-              class="w-[30%] px-4 py-2 text-black"
-            />
-            <span
-              class="addBtn bg-slate-400 text-white w-[80%] p-2 text-center text-18 cursor-pointer transition duration-300 rounded-lg hover:bg-Blue-900"
-              >Add
-            </span>
-          </d>
-          
-            <span class="editBtn hidden bg-blue-500 text-white w-1/4 py-2 px-4 text-18 cursor-pointer transition duration-300 rounded-lg">
-  Update
-</span>
-<span class="complete-status-icon absolute right-14 top-0 py-2 px-4 text-18 cursor-pointer transition duration-300 hover:bg-green-400">
-  ✓
-</span>
+    <div
+      class="flex flex-col bg-blue-300 w-[60%] justify-center items-center mt-60 rounded-lg shadow-lg"
+    >
+      <div id="todo" class="header w-[60%] text-white text-center">
+        <div class="pb-10">
+          <h2 class="text-2xl">To Do List</h2>
+          <input
+            type="text"
+            id="todo-task"
+            placeholder="What are we doing today"
+            class="w-[30%] px-4 py-2 text-black"
+          />
+          <span
+            class="addBtn bg-slate-400 text-white w-[80%] p-2 text-center text-18 cursor-pointer transition duration-300 rounded-lg hover:bg-Blue-900"
+            >Add
+          </span>
 
-            <ul id="todo-list-container" class="p-0 pl-40"></ul>
+          <span
+            class="editBtn hidden bg-blue-500 text-white w-1/4 py-2 px-4 text-18 cursor-pointer transition duration-300 rounded-lg"
+          >
+            Update
+          </span>
         </div>
-        <!-- List items go here -->
+
+        <!-- <div
+          class="complete-status-icon absolute right-14 top-0 py-2 px-4 text-18 cursor-pointer transition duration-300 hover:bg-green-400"
+        >
+          ✓
+        </div> -->
+      </div>
+      <div class="">
+        <ul id="todo-list-container" class="p-0 pl-40"></ul>
       </div>
     </div>
+    <script src="./index.js"></script>
   </body>
-  <script src="./index.js"></script>
 </html>

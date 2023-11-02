@@ -32,12 +32,14 @@ const renderToDoItem = function () {
     .map(function (todo) {
       const { id, title, isCompleted } = todo;
       return `
-    <li class = ${isCompleted && "checked"}>
-        ${title}
-         <span  id = "checked" class = "complete-status-icon" onClick = "toggleComplete(${id})">✔</span>
-        <span class = "update" onClick = "updateToDoItem(${id})">✍️</span>
+    <li class = " flex justify-between  ${isCompleted && "checked"}">
+        <p class ="gap-20">${title}</p>
+        <div class = " " > 
+        <span  id = "checked" class = "complete-status-icon" onClick = "toggleComplete(${id})">✔</span>
+         <span class = "update" onClick = "updateToDoItem(${id})">✍️</span>
         <span class="close" onClick ="deleteToDo(${id})">🗑</span>
-      </li>
+         </div>
+        </li>
     `;
     })
     .join("");
